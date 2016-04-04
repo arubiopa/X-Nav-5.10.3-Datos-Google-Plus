@@ -31,7 +31,7 @@
       // The provided key works for this sample only when run from
       // https://google-api-javascript-client.googlecode.com/hg/samples/authSample.html
       // To use in your own application, replace this API key with your own.
-      var apiKey = '';
+      var apiKey = 'AIzaSyDN-BN5pygOh8IBgi4HvWo6HSSnGMZX_GE';
 
       // Use a button to handle authentication the first time.
       function handleClientLoad() {
@@ -43,9 +43,8 @@
       function makeApiCall() {
         gapi.client.load('plus', 'v1', function() {
           var request = gapi.client.plus.people.get({
-            'userId': ''
-            // For instance: 
-            // 'userId': '+GregorioRobles'
+            'userId': '108086881826934773478'
+            'activity': 'public'
           });
           request.execute(function(resp) {
             var heading = document.createElement('h4');
@@ -53,8 +52,17 @@
             image.src = resp.image.url;
             heading.appendChild(image);
             heading.appendChild(document.createTextNode(resp.displayName));
-
+            var lista = document.createElement('ul');
+            for(i in resp.items){
+              var elemento = document.createElement('li');
+              elemento.innerHTML = resp.items[i].title + "<a href='" + resp.items[i].url + "'>";
+              if(resp.items[i].location){
+                  elemento.innerHTML += "Latitude : " + resp.items[i].location.position.latitude + "Longitude : " + resp.items[i].location.position.longitude;
+              }
+              lista.appendChild(elemento);
+            }
             document.getElementById('content').appendChild(heading);
+            document.getElementById('content').appendChild(lista);
           });
         });
       }
